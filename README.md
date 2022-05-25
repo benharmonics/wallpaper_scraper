@@ -3,6 +3,18 @@ Rust program that scrapes a directory for images which are suitable to be wallpa
 
 I have a similar program in Python but I wanted to write it in Rust... just because.
 
+## Usage
+
+```bash
+wallpaper_scraper [OPTIONS] [DIRECTORY]
+```
+
+There are just a couple of options:
+
+`-o, --output <output>` Directory to which images are copied (default: ./wallpapers)
+
+`-t, --tolerance <tolerance>` Allowed deviation from standard aspect ratios<br>(default: med) (possible values: high, med, low)
+
 ## Installation
 
 ### Cargo

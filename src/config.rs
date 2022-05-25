@@ -12,6 +12,7 @@ pub fn args() -> ArgMatches {
                 .long("output")
                 .aliases(&["dest", "destination"])
                 .takes_value(true)
+                .multiple_values(false)
                 .default_value("./wallpapers")
                 .forbid_empty_values(true)
                 .help("Directory to which images are copied")

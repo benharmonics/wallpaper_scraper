@@ -48,7 +48,12 @@ fn image_is_suitable(path: &Path, args: &ArgMatches) -> bool {
     let aspect_ratio = width as f64 / height as f64;
     let r1 = 16.0 / 9.0;
     let r2 = 4.0 / 3.0;
-    let tolerance = 0.15;
+    let tolerance = match args.value_of("tolerance").unwrap() {
+        "high" => 0.22,
+        "med" => 0.15,
+        "low" => 0.08,
+        _ => 0.15,
+    };
     if (aspect_ratio - r1).abs() / r1 > tolerance && (aspect_ratio - r2).abs() / r2 > tolerance {
         return false
     }

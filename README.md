@@ -19,8 +19,8 @@ There are just a couple of options:
 
 ### Cargo
 
-Clone the repository, navigate into the main `wallpaper_scraper` directory, then
+Clone the repository, then
 
 ```bash
-cargo install
+cargo install --path ./wallpaper_scraper
 ```

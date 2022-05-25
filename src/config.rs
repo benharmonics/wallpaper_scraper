@@ -14,7 +14,7 @@ pub fn args() -> ArgMatches {
                 .takes_value(true)
                 .default_value("./wallpapers")
                 .forbid_empty_values(true)
-                .help("Output directory (default `./wallpapers`)")
+                .help("Directory to which images are copied")
         )
         .arg(
             Arg::new("tolerance")
@@ -24,7 +24,7 @@ pub fn args() -> ArgMatches {
                 .takes_value(true)
                 .default_value("med")
                 .possible_values(["high", "med", "low"])
-                .help("Tolerance for deviation from standard aspect ratios")
+                .help("Allowed deviation from standard aspect ratios")
         )
         .get_matches()
 }

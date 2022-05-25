@@ -19,10 +19,6 @@ pub fn run(args: ArgMatches) -> io::Result<()> {
 }
 
 fn scrape_dir(path: &Path, args: &ArgMatches) -> io::Result<()> {
-    let output_dir = Path::new(args.value_of("output").unwrap());
-    if !output_dir.exists() {
-        fs::create_dir(&output_dir)?;
-    }
     // Gathering PathBufs for items in given directory, then retaining just the image files for scraping
     let image_filetypes = ["jpg", "jpeg", "png", "JPG", "JPEG", "PNG"]
         .map(|s| OsStr::new(s));
@@ -32,6 +28,10 @@ fn scrape_dir(path: &Path, args: &ArgMatches) -> io::Result<()> {
         .unwrap_or_default();
     pathbufs.retain(|buf| image_filetypes.contains(&buf.extension().unwrap_or_default()));
     // Scraping suitable images - that is, copying them into a new directory.
+    let output_dir = Path::new(args.value_of("output").unwrap());
+    if !output_dir.exists() {
+        fs::create_dir(&output_dir)?;
+    }
     for buf in &pathbufs {
         if !image_is_suitable(buf.as_path(), args) { continue; }
         fs::copy(buf, output_dir.join(buf.file_name().unwrap()))?;

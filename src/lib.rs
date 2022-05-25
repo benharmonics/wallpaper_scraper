@@ -30,7 +30,7 @@ fn scrape_dir(path: &Path, args: &ArgMatches) -> io::Result<()> {
     // Scraping suitable images - that is, copying them into a new directory.
     let output_dir = Path::new(args.value_of("output").unwrap());
     if !output_dir.exists() {
-        fs::create_dir(&output_dir)?;
+        fs::create_dir_all(&output_dir)?;
     }
     for buf in &pathbufs {
         if !image_is_suitable(buf.as_path(), args) { continue; }

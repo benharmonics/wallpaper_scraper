@@ -1,8 +1,6 @@
 # wallpaper_scraper
 Rust program that scrapes a directory for images which are suitable to be wallpapers, then saves them to another directory.
 
-I have a similar program in Python but I wanted to write it in Rust... just because.
-
 ## Usage
 
 ```bash
@@ -24,3 +22,5 @@ Clone the repository, then
 ```bash
 cargo install --path ./wallpaper_scraper
 ```
+
+Note: I have a similar program in Python but I wanted to write it in Rust... just because.

@@ -36,7 +36,7 @@ fn scrape_dir(path: &Path, args: &ArgMatches) -> io::Result<()> {
         "high" => 0.22,
         "med" => 0.15,
         "low" => 0.08,
-        _ => 0.15,
+        _ => unreachable!(),
     };
     // Scraping suitable images - that is, copying them into a new directory.
     for buf in &pathbufs {

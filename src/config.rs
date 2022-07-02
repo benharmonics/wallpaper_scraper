@@ -27,5 +27,15 @@ pub fn args() -> ArgMatches {
                 .possible_values(["high", "med", "low"])
                 .help("Allowed deviation from standard aspect ratios")
         )
+        .arg(
+            Arg::new("aspect ratio")
+                .short('r')
+                .long("ratio")
+                .takes_value(true)
+                .multiple_values(false)
+                .default_value("16x9")
+                .possible_values(["4x3", "16x9"])
+                .help("Screen aspect ratio")
+        )
         .get_matches()
 }

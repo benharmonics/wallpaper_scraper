@@ -23,8 +23,10 @@ pub fn args() -> ArgMatches {
                 .long("tolerance")
                 .alias("tol")
                 .takes_value(true)
+                .multiple_values(false)
                 .default_value("med")
                 .possible_values(["high", "med", "low"])
+                .forbid_empty_values(true)
                 .help("Allowed deviation from standard aspect ratios")
         )
         .arg(
@@ -35,6 +37,7 @@ pub fn args() -> ArgMatches {
                 .multiple_values(false)
                 .default_value("16x9")
                 .possible_values(["4x3", "16x9"])
+                .forbid_empty_values(true)
                 .help("Screen aspect ratio")
         )
         .get_matches()

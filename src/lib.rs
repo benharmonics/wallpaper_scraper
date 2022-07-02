@@ -32,16 +32,11 @@ fn scrape_dir(path: &Path, args: &ArgMatches) -> io::Result<()> {
     if !output_dir.exists() {
         fs::create_dir_all(&output_dir)?;
     }
-    let aspect_ratios: Vec<f64> = args
-        .values_of("aspect ratio")
-        .unwrap()
-        .into_iter()
-        .map(|val| match val {
-            "16x9" => 16.0 / 9.0,
-            "4x3" => 4.0 / 3.0,
-            _ => unreachable!(),
-        })
-        .collect();
+    let aspect_ratio = match args.value_of("aspect ratio").unwrap() {
+        "16x9" => 16.0 / 9.0,
+        "4x3" => 4.0 / 3.0,
+        _ => unreachable!(),
+    };
     let tolerance = match args.value_of("tolerance").unwrap() {
         "high" => 0.22,
         "med" => 0.15,
@@ -50,23 +45,21 @@ fn scrape_dir(path: &Path, args: &ArgMatches) -> io::Result<()> {
     };
     // Scraping suitable images - that is, copying them into a new directory.
     for buf in &pathbufs {
-        if !image_is_suitable(buf.as_path(), &aspect_ratios, tolerance) { continue; }
+        if !image_is_suitable(buf.as_path(), aspect_ratio, tolerance) { continue; }
         fs::copy(buf, output_dir.join(buf.file_name().unwrap()))?;
     }
     Ok(())
 }
 
 // Check if image is HD and within an acceptable tolerance of a popular aspect ratio (16:9 or 4:3)
-fn image_is_suitable(path: &Path, aspect_ratios: &[f64], tolerance: f64) -> bool {
+fn image_is_suitable(path: &Path, aspect_ratio: f64, tolerance: f64) -> bool {
     let (width, height) = image::image_dimensions(path).unwrap_or_default();
     if width < 1920 || height < 1080 {
         return false
     }
     let image_aspect_ratio = width as f64 / height as f64;
-    for ratio in aspect_ratios {
-        if (image_aspect_ratio - ratio).abs() / ratio > tolerance {
-            return false
-        }
+    if (image_aspect_ratio - aspect_ratio).abs() / aspect_ratio > tolerance {
+        return false
     }
     true
 }

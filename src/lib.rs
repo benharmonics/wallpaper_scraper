@@ -43,14 +43,13 @@ fn scrape_dir(path: &Path, args: &ArgMatches) -> io::Result<()> {
         _ => unreachable!(),
     };
     // Scraping suitable images - that is, copying them into a new directory.
-    for (i, path) in pathbufs.iter().enumerate() {
+    for (_i, path) in pathbufs.iter().enumerate() {
         if !image_is_suitable(path.as_path(), aspect_ratio, tolerance) {
             continue;
         }
-        let default_path = format!("{}", i);
         let path = path
             .file_name()
-            .unwrap_or(OsStr::new(default_path.as_str()));
+            .unwrap_or(OsStr::new(stringify!(_i)));
         fs::copy(path, output_dir.join(path))?;
     }
     Ok(())

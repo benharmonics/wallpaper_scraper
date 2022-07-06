@@ -15,6 +15,7 @@ pub fn run(args: ArgMatches) -> io::Result<()> {
         let buf = env::current_dir()?;
         scrape_dir(buf.as_path(), &args)?;
     }
+    
     Ok(())
 }
 
@@ -29,7 +30,7 @@ fn scrape_dir(path: &Path, args: &ArgMatches) -> io::Result<()> {
         let extension = buf.extension().unwrap_or_default().to_ascii_lowercase();
         image_filetypes.contains(&extension.as_os_str())
     });
-    // Getting argument values
+    // Output directory - by default it's `./wallpapers` whence the program is invoked
     let output_dir = Path::new(args.value_of("output").unwrap());
     if !output_dir.exists() {
         fs::create_dir_all(&output_dir)?;

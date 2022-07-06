@@ -1,9 +1,9 @@
 pub mod config;
 
-use std::{fs, io, env};
-use std::path::{Path, PathBuf};
-use std::ffi::OsStr;
 use clap::ArgMatches;
+use std::ffi::OsStr;
+use std::path::{Path, PathBuf};
+use std::{env, fs, io};
 
 pub fn run(args: ArgMatches) -> io::Result<()> {
     if let Some(dirs) = args.values_of("DIRECTORY") {
@@ -20,8 +20,7 @@ pub fn run(args: ArgMatches) -> io::Result<()> {
 
 fn scrape_dir(path: &Path, args: &ArgMatches) -> io::Result<()> {
     // Gathering PathBufs for items in given directory, then retaining just the image files for scraping
-    let image_filetypes = ["jpg", "jpeg", "png", "JPG", "JPEG", "PNG"]
-        .map(|s| OsStr::new(s));
+    let image_filetypes = ["jpg", "jpeg", "png", "JPG", "JPEG", "PNG"].map(|s| OsStr::new(s));
     let mut pathbufs = fs::read_dir(path)?
         .map(|res| res.map(|e| e.path()))
         .collect::<Result<Vec<PathBuf>, _>>()
@@ -44,9 +43,15 @@ fn scrape_dir(path: &Path, args: &ArgMatches) -> io::Result<()> {
         _ => unreachable!(),
     };
     // Scraping suitable images - that is, copying them into a new directory.
-    for buf in &pathbufs {
-        if !image_is_suitable(buf.as_path(), aspect_ratio, tolerance) { continue; }
-        fs::copy(buf, output_dir.join(buf.file_name().unwrap()))?;
+    for (i, path) in pathbufs.iter().enumerate() {
+        if !image_is_suitable(path.as_path(), aspect_ratio, tolerance) {
+            continue;
+        }
+        let default_path = format!("{}", i);
+        let path = path
+            .file_name()
+            .unwrap_or(OsStr::new(default_path.as_str()));
+        fs::copy(path, output_dir.join(path))?;
     }
     Ok(())
 }
@@ -55,11 +60,11 @@ fn scrape_dir(path: &Path, args: &ArgMatches) -> io::Result<()> {
 fn image_is_suitable(path: &Path, aspect_ratio: f64, tolerance: f64) -> bool {
     let (width, height) = image::image_dimensions(path).unwrap_or_default();
     if width < 1920 || height < 1080 {
-        return false
+        return false;
     }
     let image_aspect_ratio = width as f64 / height as f64;
     if (image_aspect_ratio - aspect_ratio).abs() / aspect_ratio > tolerance {
-        return false
+        return false;
     }
     true
 }

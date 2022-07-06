@@ -1,7 +1,9 @@
-use clap::{arg, Arg, Command, ArgMatches};
+use clap::{arg, Arg, ArgMatches, Command};
+
+const PROGRAM_NAME: &str = env!("CARGO_PKG_NAME");
 
 pub fn args() -> ArgMatches {
-    Command::new("wallpaper_scraper")
+    Command::new(PROGRAM_NAME)
         .version("0.1")
         .author("benharmonics")
         .about("Scrapes a directory for HD images suitable to be wallpapers")
@@ -15,7 +17,7 @@ pub fn args() -> ArgMatches {
                 .multiple_values(false)
                 .default_value("./wallpapers")
                 .forbid_empty_values(true)
-                .help("Directory to which images are copied")
+                .help("Directory to which images are copied"),
         )
         .arg(
             Arg::new("tolerance")
@@ -27,7 +29,7 @@ pub fn args() -> ArgMatches {
                 .default_value("med")
                 .possible_values(["high", "med", "low"])
                 .forbid_empty_values(true)
-                .help("Allowed deviation from standard aspect ratios")
+                .help("Allowed deviation from standard aspect ratios"),
         )
         .arg(
             Arg::new("aspect ratio")
@@ -38,7 +40,7 @@ pub fn args() -> ArgMatches {
                 .default_value("16x9")
                 .possible_values(["4x3", "16x9"])
                 .forbid_empty_values(true)
-                .help("Screen aspect ratio")
+                .help("Screen aspect ratio"),
         )
         .get_matches()
 }

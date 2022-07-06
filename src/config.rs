@@ -37,8 +37,8 @@ pub fn args() -> ArgMatches {
                 .long("ratio")
                 .takes_value(true)
                 .multiple_values(false)
-                .default_value("16x9")
-                .possible_values(["4x3", "16x9"])
+                .default_value("16:9")
+                .possible_values(["4:3", "16:9"])
                 .forbid_empty_values(true)
                 .help("Screen aspect ratio"),
         )

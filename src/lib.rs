@@ -15,7 +15,7 @@ pub fn run(args: ArgMatches) -> io::Result<()> {
         let buf = env::current_dir()?;
         scrape_dir(buf.as_path(), &args)?;
     }
-    
+
     Ok(())
 }
 
@@ -37,8 +37,8 @@ fn scrape_dir(path: &Path, args: &ArgMatches) -> io::Result<()> {
     }
     // We assume your monitor is 16:9 but you can set it to 4:3 as well
     let aspect_ratio = match args.value_of("aspect ratio").unwrap() {
-        "16x9" => 16.0 / 9.0,
-        "4x3" => 4.0 / 3.0,
+        "16:9" => 16.0 / 9.0,
+        "4:3" => 4.0 / 3.0,
         _ => unreachable!(),
     };
     // Kind of arbitrary values. They were found by manually testing a lot of different size images.

@@ -57,7 +57,13 @@ fn scrape_dir(path: &Path, args: &ArgMatches) -> io::Result<()> {
 
 // Check if image is HD and within an acceptable tolerance of a popular aspect ratio (16:9 or 4:3)
 fn image_is_suitable(path: &Path, aspect_ratio: f64, tolerance: f64) -> bool {
-    let (width, height) = image::image_dimensions(path).unwrap_or_default();
+    let (width, height) = match imagesize::size(path) {
+        Ok(dim) => (dim.width, dim.height),
+        Err(e) => {
+            eprintln!("Error getting image dimensions: {}", e);
+            (0, 0)
+        }
+    };
     if width < 1920 || height < 1080 {
         return false;
     }

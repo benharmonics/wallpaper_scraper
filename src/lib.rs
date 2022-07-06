@@ -21,7 +21,7 @@ pub fn run(args: ArgMatches) -> io::Result<()> {
 
 fn scrape_dir(path: &Path, args: &ArgMatches) -> io::Result<()> {
     // Gathering PathBufs for items in given directory, then retaining just the image files for scraping
-    let image_filetypes = ["jpg", "jpeg", "png", "webp"].map(|s| OsStr::new(s));
+    let image_filetypes = ["bmp", "jpeg", "jpg", "png", "psd", "webp"].map(|s| OsStr::new(s));
     let mut pathbufs: Vec<PathBuf> = fs::read_dir(path)?
         .map(|res| res.map(|e| e.path()))
         .map(|res| res.unwrap_or_default())

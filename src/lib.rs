@@ -22,10 +22,10 @@ pub fn run(args: ArgMatches) -> io::Result<()> {
 fn scrape_dir(path: &Path, args: &ArgMatches) -> io::Result<()> {
     // Gathering PathBufs for items in given directory, then retaining just the image files for scraping
     let image_filetypes = ["jpg", "jpeg", "png", "webp"].map(|s| OsStr::new(s));
-    let mut pathbufs = fs::read_dir(path)?
+    let mut pathbufs: Vec<PathBuf> = fs::read_dir(path)?
         .map(|res| res.map(|e| e.path()))
-        .collect::<Result<Vec<PathBuf>, _>>()
-        .unwrap_or_default();
+        .map(|res| res.unwrap_or_default())
+        .collect();
     pathbufs.retain(|buf| {
         let extension = buf.extension().unwrap_or_default().to_ascii_lowercase();
         image_filetypes.contains(&extension.as_os_str())

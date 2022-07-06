@@ -6,14 +6,17 @@ use std::path::{Path, PathBuf};
 use std::{env, fs, io};
 
 pub fn run(args: ArgMatches) -> io::Result<()> {
-    if let Some(dirs) = args.values_of("DIRECTORY") {
-        for dir in dirs {
-            let buf = fs::canonicalize(dir)?;
+    match args.values_of("DIRECTORY") {
+        Some(dirs) => {
+            for dir in dirs {
+                let buf = fs::canonicalize(dir)?;
+                scrape_dir(buf.as_path(), &args)?;
+            }
+        }
+        None => {
+            let buf = env::current_dir()?;
             scrape_dir(buf.as_path(), &args)?;
         }
-    } else {
-        let buf = env::current_dir()?;
-        scrape_dir(buf.as_path(), &args)?;
     }
 
     Ok(())

@@ -1,7 +1,9 @@
+use wallpaper_scraper::{config, run};
+
 fn main() {
-    let args = wallpaper_scraper::config::args();
-    if let Err(e) = wallpaper_scraper::run(args) {
-        eprintln!("Error: {e}");
+    let args = config::args();
+    if let Err(e) = run(args) {
+        eprintln!("Application error: {e}");
         std::process::exit(1);
     }
 }
